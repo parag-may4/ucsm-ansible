@@ -41,7 +41,8 @@ ucs_argument_spec = dict(
     port=dict(type='int', default=None),
     use_ssl=dict(type='bool', default=True),
     use_proxy=dict(type='bool', default=True),
-    proxy=dict(type='str', default=None),
+    proxy=dict(type='str', default=None)
+    starship_options=dict(type='dict', default=None),
 )
 
 
@@ -59,6 +60,20 @@ class UCSModule():
 
     def login(self):
         from ucsmsdk.ucshandle import UcsHandle
+        from ucsmsdk.ucscoreutils import add_handle_to_list
+        ansible = self.module.params
+
+        starship_options = ansible.get('starship_options')
+        if starship_options:
+            server = UcsHandle("192.168.1.1", "admin", "password")
+            server.set_starship_proxy(starship_options["url"])
+            server.set_starship_headers(starship_options["cookies"])
+            #model = starship_options.get("server_details", {}).get("Model", "")
+            #server._set_model(force=True, model=model)
+            #server._set_platform(model=model)
+            add_handle_to_list(server)
+            self.login_handle = server
+            return server
 
         # use_proxy=yes (default) and proxy=None (default) should be using the system defined proxy
         # use_proxy=yes (default) and proxy=value should use the provided proxy
@@ -84,6 +99,12 @@ class UCSModule():
         self.login_handle = handle
 
     def logout(self):
+        ansible = self.module.params
+
+        starship_options = ansible.get('starship_options')
+        if starship_options:
+            return True
+
         if self.login_handle:
             self.login_handle.logout()
             return True
