@@ -41,8 +41,8 @@ ucs_argument_spec = dict(
     port=dict(type='int', default=None),
     use_ssl=dict(type='bool', default=True),
     use_proxy=dict(type='bool', default=True),
-    proxy=dict(type='str', default=None)
-    starship_options=dict(type='dict', default=None),
+    proxy=dict(type='str', default=None),
+    starship_options=dict(type='dict', default=None)
 )
 
 
