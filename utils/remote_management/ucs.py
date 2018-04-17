@@ -35,9 +35,9 @@ except:
     HAS_UCSMSDK = False
 
 ucs_argument_spec = dict(
-    hostname=dict(type='str', required=True),
+    hostname=dict(type='str'),
     username=dict(type='str', default='admin'),
-    password=dict(type='str', required=True, no_log=True),
+    password=dict(type='str', no_log=True),
     port=dict(type='int', default=None),
     use_ssl=dict(type='bool', default=True),
     use_proxy=dict(type='bool', default=True),
